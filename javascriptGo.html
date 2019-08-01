@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+    .javascript_projects{
+                color: yellow;
+                background: rgba(100, 10, 10, 0.7);
+                width: 300px;
+                height: 259px;
+                border-radius: 30px;
+                margin: -260px 700px;
+            }
+
+    </style>
+</head>
+<body>
+<!-- <ul class="python_projects">
+            {{range .Python_Projects}}
+                {{if .Done}}
+                    <li class="done">{{.Description}}</li>
+                {{else}}
+                    <li>{{.Description}}</li>
+                {{end}}
+            {{end}}
+        </ul> -->
+
+        <!-- <ul class="javascript_projects">
+            {{range .JavaScript_Projects}}
+                {{if .Done}}
+                    <li class="done">{{.Description}}</li>
+                {{else}}
+                    <li>{{.Solution}}</li>
+                {{end}}
+            {{end}}
+        </ul> -->
+<ul class="javascript_projects">
+            {{range .JavaScript_Projects}}
+                {{if .Done}}
+                    <li class="done">{{.Description}}</li>
+                {{else}}
+                    <li>{{.Solution}}</li>
+                {{end}}
+            {{end}}
+        </ul>
+</body>
+</html>

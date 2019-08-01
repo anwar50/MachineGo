@@ -1,0 +1,378 @@
+<html>
+    <head>
+    <title>My GoMachine</title>
+        <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+        <script src="brain.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <style>
+            body{
+                background-image: url("https://images.idgesg.net/images/article/2018/01/artificial_intelligence_ai_brain_digital-100745931-large.jpg");
+                /* Set a specific height */ 
+                min-height: 500px; /* Create the parallax scrolling effect */\n    
+                background-attachment: fixed;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
+            .App {\n  text-align: center;\n  min-height: 100vh;\n  
+            display: flex;\n  flex-direction: column;\n}\n
+            body{ 
+                background-image: url(" + escape(require("./wall.png")) + ");
+                /* Set a specific height */\n    
+                min-height: 500px; 
+                /* Create the parallax scrolling effect */
+                background-attachment: fixed;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
+            *{
+                font-family: 'Fira Code' !important;
+                }
+            h1{
+                font-weight: 500;
+                margin: 5px;
+                }
+            p{
+                margin:0;
+                font-size: 20px;
+                }
+            #weatherArea{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                }
+            .App-header {
+                padding:5px;
+                border-bottom-right-radius: 10px;
+                border-bottom-left-radius: 10px;
+                background-color: #134675a2;
+                flex: 0 0 10%;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-around;
+                font-size: calc(10px + 2vmin);
+                color: white;
+                box-shadow: 0px 0px 14px -1px rgba(0,0,0,0.75);
+                }
+            #mainBody{
+                display: flex;
+                flex-direction: row;
+                padding: 20px;
+                flex:1 1;
+                 /* background-color: #282c34; */
+                 color: white;
+                }
+            #rightSide{
+                display: flex;
+                flex-direction: column;
+                flex:1 1;}
+            #leftSide{
+                display: flex;
+                flex-direction: column;
+                flex:1 1;\n  \n}
+            #timetable{
+                flex:2 1;
+                padding:10px;
+                border: 0;
+                box-shadow: 0px 0px 14px -1px rgba(0,0,0,0.75);
+                box-shadow: inset 0px 0px 36px 6px rgba(0,0,0,0.52);
+                border-radius: 10px;}
+            #maz{
+                display: flex;
+                justify-content: center;
+                /* flex:1; */
+                }
+            #idc{
+                flex:1 1;
+                }
+            .center iframe {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                -webkit-transform: translate(-50%,-50%);
+                 transform: translate(-50%,-50%);
+                 }
+            @media (max-width: 900px) {
+                .App-header{
+                    flex-direction: column;
+                    }
+                #mainBody { 
+                    flex-direction: column-reverse;
+                    padding: 0;
+                    }
+                #timetable, #idc{
+                    min-height: 100vh;
+                      /* display: none; */
+                      }  
+                h6{
+                    margin:0;
+                    }
+                }
+            hr {
+                opacity: 0;
+                }
+            #mazSection{
+                border-radius:10px;
+                padding:5px;
+                background-color:rgba(35, 134, 126, 0.651);
+                margin:10px;
+                padding-top: 10px;
+                box-shadow: 0px 0px 14px -1px rgba(0,0,0,0.75);
+                font-weight: 700;
+                color: white;
+            }
+            #Todo {
+                border-radius:10px;
+                padding:5px;
+                background-color:rgba(35, 134, 126, 0.651);
+                margin:10px;
+                padding-top: 10px;
+                box-shadow: 0px 0px 14px -1px rgba(0,0,0,0.75);
+                font-weight: 700;
+                color: white;
+            }
+        </style>
+        <script>
+                function startTime() {
+                var today = new Date();
+                var h = today.getHours();
+                var m = today.getMinutes();
+                var s = today.getSeconds();
+                m = checkTime(m);
+                s = checkTime(s);
+                document.getElementById('time').innerHTML =
+                h + ":" + m + ":" + s;
+                var t = setTimeout(startTime, 500);
+                }
+                function checkTime(i) {
+                if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+                return i;
+                }
+            </script>
+        
+    </head>
+    <body onload="startTime()">
+
+    <div id="root">
+            <div class="App">
+                <header class="App-header">
+                    <h1> {{.PageTitle}} <p> {{.Date}} </p></h1>
+                    <h6><div id="time"></div> </h6> 
+                </header>
+                <div id="mainBody">
+                    <div class="rightSide">
+                        <hr>
+                    </div>
+                    <div class="leftSide">
+                        <hr>
+                        <div id="mazSection">
+                            <p style="font-weight: 900; text-align: center"> {{.Machine}} </p>
+                            <p style="font-weight: 500; text-align: center"> {{.What_Is_ML}} </p>
+                            <div id="maz">
+                                <table style="color: white">
+                                    <thead style="text-align: center">
+                                        <tr>
+                                            <th> Types of machine learning </th> 
+                                        </tr>
+                                    </thead>
+                                    <tbody style="text-align: center;">
+                                        {{range .MachineLearning_Supervised}}
+                                            {{if .Done}}
+                                                <tr><td class="done"> {{.SupervisedLearning}} </td><tr>
+                                            {{else}}
+                                                <tr><td>{{.SupervisedLearning}} </td></tr>
+                                            {{end}}
+                                        {{end}}
+
+                                        {{range .MachineLearning_UnSupervised}}
+                                            {{if .Done}}
+                                                <tr><td class="done"> {{.UnSupervisedLearning}} </td><tr>
+                                            {{else}}
+                                                <tr><td>{{.UnSupervisedLearning}} </td></tr>
+                                            {{end}}
+                                        {{end}}
+
+                                        {{range .MachineLearning_Reinforcement}}
+                                            {{if .Done}}
+                                                <tr><td class="done"> {{.ReinforcementLearning}} </td><tr>
+                                            {{else}}
+                                                <tr><td>{{.ReinforcementLearning}} </td><tr>
+                                            {{end}}
+                                        {{end}}
+                                    <tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <hr>
+                        <div id="Todo">
+                            <p style="color: white"> {{.ColourTitle}} </p>
+                            <input style="display:inline-block;" type="color" value="#ff0000" />
+                            <p style="color: white"> Colour detected as.. </p>
+                            <div id="display"></div>
+                            <script src="https://unpkg.com/brain.js@1.1.2/browser.min.js"></script>
+                            <!-- HELPER FUNCTION -->
+                            <script>
+                                function RGBConverter(h) {
+                                    var Regex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+                                    h = h.replace(Regex, function(m, r, g, b){
+                                        return r + r + g + g + b + b;
+                                    });
+
+                                    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(h);
+                                    return result ? {
+                                        r: Math.round(parseInt(result[1], 16)/2.55)/100,
+                                        g: Math.round(parseInt(result[2], 16)/2.55)/100,
+                                        b: Math.round(parseInt(result[3], 16)/2.55)/100,
+                                    } : null;
+                                }
+                            </script>
+                            <script>
+                                const input = document.querySelector("input");
+                                const display_result = document.querySelector("#time");
+                                const final_result = document.querySelector("#display")
+
+                                input.addEventListener("change", (event) => {
+                                    const rgb = RGBConverter(event.target.value);
+                                    console.log(rgb);
+
+                                    //give the neural network the RGB, train it and we will know whether the colour is light or dark!
+                                    const network = new brain.NeuralNetwork()
+
+                                    network.train([
+                                        {input: {R: 0.66, G: 0.77, B: 0.88}, output: {light: 1}},
+                                        {input: {R: 0.60, G: 0.27, B: 0.72}, output: {dark: 1}},
+                                        {input: {R: 0.54, G: 0.24, B: 0.28}, output: {light: 1}},
+                                        {input: {R: 0.1, G: 0.35, B: 0.6}, output: {dark: 1}},
+                                        {input: {R: 0.43, G: 0.43, B: 0.5}, output: {dark: 1}},
+                                        {input: {R: 0.29, G: 0.71, B: 0.59}, output: {dark: 1}},
+                                        {input: {R: 0.31, G: 0.7, B: 0.74}, output: {light: 1}},
+                                        {input: {R: 0.81, G: 0.17, B: 0.2}, output: {light: 1}},
+                                        {input: {R: 0.8, G: 0.33, B: 0.3}, output: {dark: 1}},
+                                    ])
+                                    const result = brain.likely(rgb, network);
+                                    const final_result = result;
+                                    console.log(result);
+                                    document.getElementById("time").innerHTML = result;
+                                    document.getElementById("display").innerHTML = final_result
+                                    display_result.style.color = event.target.value;
+                                    display_result.style.colour = result === "dark" ? "white" : "black"
+                                })
+
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+
+
+
+
+
+
+
+    <!-- <div class="page_title" >
+        <h1>{{.PageTitle}}<h1>
+        <div class="Date_Time"> 
+            {{.Date}} 
+            <br />
+            <div id="time"></div>
+        </div>
+    </div>
+        <div class="container">
+        <div class ="side_1">
+                <div class="title"><b>{{.Machine}}</b><div>
+                <p> {{.What_Is_ML}} </p>
+                <br />
+                <div class="title"><b>{{.Supervised}}</b><div>
+                <ul>
+                    {{range .MachineLearning_Supervised}}
+                        {{if .Done}}
+                            <li class="done"> {{.SupervisedLearning}} </li>
+                        {{else}}
+                            <li>{{.SupervisedLearning}} </li>
+                        {{end}}
+                    {{end}}
+                </ul>
+                <br />
+                <div class="title"><b>{{.UnSupervised}}</b><div>
+                <ul>
+                    {{range .MachineLearning_UnSupervised}}
+                        {{if .Done}}
+                            <li class="done"> {{.UnSupervisedLearning}} </li>
+                        {{else}}
+                            <li>{{.UnSupervisedLearning}} </li>
+                        {{end}}
+                    {{end}}
+                </ul>
+                <br />
+                <div class="title"><b>{{.Reinforcement}}</b><div>
+                <ul>
+                    {{range .MachineLearning_Reinforcement}}
+                        {{if .Done}}
+                            <li class="done"> {{.ReinforcementLearning}} </li>
+                        {{else}}
+                            <li>{{.ReinforcementLearning}} </li>
+                        {{end}}
+                    {{end}}
+                </ul>
+        </div>
+        <div class="side_2">
+        <p> {{.ColourTitle}} </p>
+        <input type="color" value="#ff0000" />
+        <script src="https://unpkg.com/brain.js@1.1.2/browser.min.js"></script>
+        
+        <script>
+            function RGBConverter(h) {
+                var Regex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+                h = h.replace(Regex, function(m, r, g, b){
+                    return r + r + g + g + b + b;
+                });
+
+                var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(h);
+                return result ? {
+                    r: Math.round(parseInt(result[1], 16)/2.55)/100,
+                    g: Math.round(parseInt(result[2], 16)/2.55)/100,
+                    b: Math.round(parseInt(result[3], 16)/2.55)/100,
+                } : null;
+            }
+        </script>
+        <script>
+            const input = document.querySelector("input");
+            const display_result = document.querySelector("#Date_Time");
+
+            input.addEventListener("change", (event) => {
+                const rgb = RGBConverter(event.target.value);
+                console.log(rgb);
+
+                //give the neural network the RGB, train it and we will know whether the colour is light or dark!
+                const network = new brain.NeuralNetwork()
+
+                network.train([
+                    {input: {R: 0.66, G: 0.77, B: 0.88}, output: {light: 1}},
+                    {input: {R: 0.60, G: 0.27, B: 0.72}, output: {dark: 1}},
+                    {input: {R: 0.54, G: 0.24, B: 0.28}, output: {light: 1}},
+                    {input: {R: 0.1, G: 0.35, B: 0.6}, output: {dark: 1}},
+                    {input: {R: 0.43, G: 0.43, B: 0.5}, output: {dark: 1}},
+                    {input: {R: 0.29, G: 0.71, B: 0.59}, output: {dark: 1}},
+                    {input: {R: 0.31, G: 0.7, B: 0.74}, output: {light: 1}},
+                    {input: {R: 0.81, G: 0.17, B: 0.2}, output: {light: 1}},
+                    {input: {R: 0.8, G: 0.33, B: 0.3}, output: {dark: 1}},
+                ])
+                const result = brain.likely(rgb, network);
+                console.log(result);
+                document.getElementById("Date_Time").innerHTML = result;
+                display_result.style.color = event.target.value;
+                display_result.style.colour = result === "dark" ? "white" : "black"
+            })
+
+        </script>
+
+        
+        </div>
+    </div> -->
+    </body>
+</html>
